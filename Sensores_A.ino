@@ -157,19 +157,19 @@ void mMF()
   {
     mayor = -1000000,00;
     menor =  1000000,00;
-    for(byte j=1;j<=4;j++)
+    for(byte j=1;j<=5;j++)
     {
       if(m[i][j] > mayor) mayor=m[i][j];
       if(m[i][j] < menor) menor=m[i][j];
     }
-    Serial.print("EL MAYOR DE LA FILA ");Serial.print(i);Serial.print("ES=");Serial.println(mayor);
-    Serial.print("EL MENOR DE LA FILA");Serial.print(i);Serial.print("ES = ");Serial.println(menor);  
+    Serial.print("EL MAYOR DE LA FILA ");Serial.print(i);Serial.print(" ES = ");Serial.println(mayor);
+    Serial.print("EL MENOR DE LA FILA ");Serial.print(i);Serial.print(" ES = ");Serial.println(menor);  
   }
 }
 void mMC() // menor MAYOR de la columna
 {
   float mayor,menor;
-  for(byte j=1 ; j<=4 ; j++)
+  for(byte j=1 ; j<=5 ; j++)
   {
     mayor = 0,00;
     menor = 100,00;
@@ -180,7 +180,7 @@ void mMC() // menor MAYOR de la columna
         mayor = m[i][j];
       }
     }
-    Serial.print("EL MAYOR DE SENSOR");Serial.print(j);Serial.print("ES = ");Serial.println(mayor);
+    Serial.print("EL MAYOR DE SENSOR ");Serial.print(j);Serial.print(" ES = ");Serial.println(mayor);
   }
   for(byte j=1 ; j<=4 ; j++)
   {
@@ -193,13 +193,13 @@ void mMC() // menor MAYOR de la columna
         menor = m[i][j];
       }
     }
-    Serial.print("EL MENOR DE SENSOR");Serial.print(j); Serial.print("ES=");Serial.println(menor);
+    Serial.print("EL MENOR DE SENSOR ");Serial.print(j); Serial.print(" ES = ");Serial.println(menor);
   }
 }
 void eAC()
 {
   float eac[j];
-  for(byte j1; j<=4;j++)
+  for(byte j1; j<=5;j++)
   {
     eac[j]=0.00;
     for(byte i=1; i<=n;i++)
@@ -207,16 +207,16 @@ void eAC()
       eac[j]=eac[j] + abs(m[i][j]-m[n][j]);
     }
     eac[j]= eac[j]/n;
-    Serial.print("ERROR ABSOLUTO SENSOR");Serial.print(j); Serial.print("ES=");Serial.println(eac[j]);
+    Serial.print("ERROR ABSOLUTO SENSOR ");Serial.print(j); Serial.print("ES = ");Serial.println(eac[j]);
   }
 }
 void eRC()
 {
   float erc,eac[j];
-  for(byte j1; j<=4;j++)
+  for(byte j1; j<=5;j++)
   {
     erc = (eac[j]/m[n][j])*100;
-    Serial.print("ERROR RELATIVO SENSOR");Serial.print(j); Serial.print("ES=");Serial.println(erc);
+    Serial.print("ERROR RELATIVO SENSOR ");Serial.print(j); Serial.print(" ES=");Serial.println(erc);
   }
   Serial.println();
 }
@@ -226,12 +226,12 @@ void eAF()
   for(byte i=1;i<=n;i++)
   {
     eaf[i]= 0.00;
-    for(byte j1; j<=4;j++)
+    for(byte j1; j<=5;j++)
     {
       eaf[i] = eaf[i] + abs(m[i][j]-v[i]);
     }
     eaf[i]=eaf[i]/4;
-    Serial.print(" ERROR ABSOLUTO FILA");Serial.print(i);Serial.print(" ES= ");Serial.println(eaf[i]);
+    Serial.print(" ERROR ABSOLUTO FILA ");Serial.print(i);Serial.print(" ES = ");Serial.println(eaf[i]);
   }
   Serial.println();
 }
@@ -249,9 +249,9 @@ void eaT()
 {
   float mt;
   mt = 0.00;
-  for(byte i=1; i<=4;i++)
+  for(byte i=1; i<=n;i++)
   {
-    for(byte j=1; j<=4;j++)
+    for(byte j=1; j<=5;j++)
     {
       mt = m[i][j] + mt;
     }
@@ -267,7 +267,7 @@ void eaT()
     }
   }
   eat = eat/(n*4);
-  Serial.print("EL ERROR ABSOLUTO DEL TOTAL ES=");Serial.print(eat);
+  Serial.print("EL ERROR ABSOLUTO DEL TOTAL ES = ");Serial.print(eat);
   ert=eat/mt;
-  Serial.print("EL ERROR RELATIVO DEL TOTAL ES=");Serial.println(ert);
+  Serial.print("EL ERROR RELATIVO DEL TOTAL ES = ");Serial.println(ert);
 }
