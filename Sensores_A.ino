@@ -4,6 +4,8 @@ byte i,j;
 int n;
 byte op;
 float v[10];
+void despliegue(float matx[][7]);
+
 void setup()
 {
   Serial.begin(9600);
@@ -40,16 +42,8 @@ void loop ()
       mMC();
       break;
     case 7:
-      eAF();
-      eRF();
+      errorReativoColumna();
       break;
-    case 8:
-      eAC();
-      eRC();
-      break;
-    case 9:
-      eaT();
-    break;
   }
 }
 int menu()
@@ -63,9 +57,7 @@ int menu()
   Serial.println("|4|  MEDIAS DE COLUMNAS    |");
   Serial.println("|5|  MAYOR Y MENOR DE VALOR FILAS    |");
   Serial.println("|6|  MAYOR Y MENOR DE VALOR DE COLUMNAS|");
-  Serial.println("|7|  ERROR ABSOLUTO Y RELATIVO DE FILAS    |");
-  Serial.println("|8|  ERROR ABSOLUTO Y RELATIVO DE COLUMNAS    |");
-  Serial.println("|9|  ERROR ABSOLUTO Y RELATIVO TOTAL    |");
+  Serial.println("|7|  ERROR ABSOLUTO Y RELATIVO DE COLUMNAS    |");
   Serial.println();
   while(!Serial.available()){}
   OPCION=Serial.readString().toInt();
@@ -132,7 +124,7 @@ void mF()
     }
     mf=mf/5;
     Serial.print("MEDIA DE FILA ");Serial.print(i);Serial.print(" ES = ");Serial.println(mf);
-    v[i]=mf;
+    m[i][6] = mf;
   }
 }
 void mC()
@@ -147,7 +139,7 @@ void mC()
     }
     mc=mc/n;
     Serial.print("MEDIA DEL SENSOR ");Serial.print(j);Serial.print(" ES = ");Serial.println(mc);
-    m[n][j]=mc;
+    m[n+1][j]=mc;
   }
 }
 void mMF()
@@ -198,9 +190,11 @@ void mMC() // menor MAYOR de la columna
 }
 void eAC()
 {
+  
   float eac[j];
-  for(byte j1; j<=5;j++)
+  for(byte j = 1; j<=5;j++)
   {
+    Serial.print("media: ");Serial.print(j); Serial.print(" : ");Serial.print(m[n][j]);
     eac[j]=0.00;
     for(byte i=1; i<=n;i++)
     {
@@ -220,20 +214,22 @@ void eRC()
   }
   Serial.println();
 }
-void eAF()
+void errorReativoColumna()
 {
-  float eaf[i];
-  for(byte i=1;i<=n;i++)
-  {
-    eaf[i]= 0.00;
-    for(byte j1; j<=5;j++)
-    {
-      eaf[i] = eaf[i] + abs(m[i][j]-v[i]);
+  despliegue(m);
+  for(int j =1; j <=5; j++){
+    float errorabsolutoColumna = 0.0;
+    for(int i = 1; i<=n; i++){
+      errorabsolutoColumna += abs(m[i][j] - m[n+1][j]);
     }
-    eaf[i]=eaf[i]/4;
-    Serial.print(" ERROR ABSOLUTO FILA ");Serial.print(i);Serial.print(" ES = ");Serial.println(eaf[i]);
+    errorabsolutoColumna = errorabsolutoColumna/n;
+    float media = m[n+1][j];
+    float errorRelativo = (errorabsolutoColumna/media) * 100.00;
+    
+    Serial.print(" ERROR RELATIVO SENSOR ");Serial.print(j);Serial.print(" ES = ");Serial.println(errorabsolutoColumna);
+    Serial.print(" ERROR ABSOLUTO SENSOR ");Serial.print(j);Serial.print(" ES = ");Serial.print(errorRelativo);Serial.println("%.");
   }
-  Serial.println();
+  
 }
 void eRF()
 {
@@ -270,4 +266,16 @@ void eaT()
   Serial.print("EL ERROR ABSOLUTO DEL TOTAL ES = ");Serial.print(eat);
   ert=eat/mt;
   Serial.print("EL ERROR RELATIVO DEL TOTAL ES = ");Serial.println(ert);
+}
+
+
+void despliegue(float matx[][7]) {
+  int i,j;
+  for (i=1;i <= n+1;i+=1) {
+    for (j=1;j<=7;j+=1) {
+      Serial.write(" [");Serial.write(i+48);Serial.write(",");Serial.write(j+48),Serial.write("]: ");
+      Serial.print(matx[i][j]);Serial.write(" ");
+    }
+    Serial.println(' ');
+  }
 }
