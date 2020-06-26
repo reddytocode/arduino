@@ -1,4 +1,4 @@
-float m[11][6];
+float m[11][7];
 float l;
 byte i,j;
 int n;
@@ -55,6 +55,7 @@ void loop ()
 int menu()
 {
   int OPCION;
+  Serial.println("");
   Serial.println("|    Menu    |");
   Serial.println("|1|  CANTIDAD DE DATOS A TOMAR  |");
   Serial.println("|2|  TOMAR DATOS Y DESPLEGAR  |");
@@ -88,11 +89,13 @@ void pDmD()
 
    int i,j;
   for (i=1;i <= n;i+=1) {
-    for (j=1;j<=4;j+=1) {
-      Serial.write("[");Serial.write(i+48);Serial.write(",");Serial.write(" Sensor ");Serial.write(j+48),Serial.write("]:");
-      while (!Serial.available());
-      m[i][j] = Serial.parseInt(); Serial.println(m[i][j]); 
-      delay(300);   
+    for (j=1;j<=5;j+=1) {
+      Serial.write("n =");Serial.write(i+48);Serial.write(", ");Serial.write(" Sensor ");Serial.write(j+48),Serial.write(" >> ");
+      while(true){
+        m[i][j] = Serial.parseInt(); 
+        if(m[i][j]>0) break;
+      }
+      Serial.println(m[i][j]); 
     }
   }
   
@@ -107,20 +110,12 @@ void pDmD()
   for(byte i=1;i<=n;i++)
   {
     j=i;
-//    delay(1000);
-//    l = analogRead(A1);
-//    m[i][1]=0.48701298701*l;
-//    l = analogRead(A2);
-//    m[i][2]=0.48701298701*l; 
-//    l = analogRead(A3);
-//    m[i][3]=0.48701298701*l; 
-//    l = analogRead(A4);
-//    m[i][4]=0.48701298701*l;
     Serial.print("|");Serial.print(j);
     Serial.print("| ");Serial.print(m[i][1]);
     Serial.print(" | ");Serial.print(m[i][2]);
     Serial.print(" | ");Serial.print(m[i][3]);
-    Serial.print(" | ");Serial.print(m[i][4]);Serial.println("|");
+    Serial.print(" | ");Serial.print(m[i][4]);
+    Serial.print(" | ");Serial.print(m[i][5]);Serial.println("|");
     Serial.println("---------------------------------------");
   }
   Serial.print(" |");
@@ -131,11 +126,11 @@ void mF()
   for(byte i=1; i<=n; i++)
   {
     mf=0.00;
-    for(byte j=1; j<=4;j++)
+    for(byte j=1; j<=5;j++)
     {
       mf = m[i][j] + mf;
     }
-    mf=mf/4;
+    mf=mf/5;
     Serial.print("MEDIA DE FILA ");Serial.print(i);Serial.print(" ES = ");Serial.println(mf);
     v[i]=mf;
   }
@@ -143,7 +138,7 @@ void mF()
 void mC()
 {
   float mc;
-  for(byte j=1; j<=4; j++)
+  for(byte j=1; j<=5; j++)
   {
     mc = 0,00;
     for(byte i=1;i<=n; i++)
